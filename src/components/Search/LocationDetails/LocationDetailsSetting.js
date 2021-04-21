@@ -20,6 +20,7 @@ export const DetailCard = styled.div`
     width: 450px;
     border: 2px solid orange;
     background-color: ivory;
+    margin-bottom:150px;
 `
 
 export const Name = styled.div`

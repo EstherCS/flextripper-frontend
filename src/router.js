@@ -45,7 +45,7 @@ export default class RouterWrap extends Component {
                         )}/>
                         <Route path="/home" component={Home} type="private"/>
                         <Route path="/search" component={Search} />
-                        <Route path="/viewtrip" component={ViewTrip} />
+                        {/*<Route path="/viewtrip" component={ViewTrip} />*/}
                         <Route path="/viewmytrips" component={ViewMyTrips} />
                         <Route path="/cityChi" component={Chi} />
                         <Route path="/cityNY" component={NY} />

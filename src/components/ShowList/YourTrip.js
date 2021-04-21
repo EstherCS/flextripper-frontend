@@ -50,7 +50,7 @@ class YourTrip extends React.Component {
     let { places } = this.state;
     return (
       <div className="content">
-        <Card className="yourtrip" bordered={true} style={{ width: 400 }}>
+        <Card className="yourtrip" bordered={false} style={{ width: 400 }}>
           <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
             <div className="row" style={{ marginTop: 20 }}>
               <div className="col-sm-1" />

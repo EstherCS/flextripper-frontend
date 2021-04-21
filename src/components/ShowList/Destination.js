@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, Card, Typography } from "antd";
+import { Button, Card, Typography, Form } from "antd";
+import {Link} from "react-router-dom";
 
 class Destination extends React.Component {
   state = {
@@ -11,11 +12,8 @@ class Destination extends React.Component {
     return (
       <Card className="destination" border={true} style={{ width: 300 }}>
         <h2>Destination City</h2>
-        <h4>
-          <Text> Los Angeles </Text>
-        </h4>
+        <Form><input></input></Form>
         <p>
-          <Button>Change city</Button>
         </p>
       </Card>
     );

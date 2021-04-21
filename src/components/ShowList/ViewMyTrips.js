@@ -15,6 +15,7 @@ import { Card } from "antd";
 import { Button, ButtonGroup } from "@material-ui/core";
 import Trips from "./Trips";
 import {Link} from "react-router-dom";
+import "./ListStyle.css";
 
 export const Wrapper = styled.div`
   display: flex;
@@ -284,16 +285,14 @@ const ViewTrip = () => {
                         <Grid container>
                             <Grid item xs={12}>
                                 <Button>
-                                    <Link to="/">Edit the trip</Link>
+                                    <Link to="/search">Edit the trip</Link>
                                 </Button>
-                                <Card className="cards" bordered={true} style={{ width: 300 }}>
+                                <Card className="cards" bordered={false} style={{ width: 300 }}>
                                     <header>Trips</header>
                                     <Trips listItems={listItems} className="trips" />
                                 </Card>
                             </Grid>
-                            <Grid item xs={12}>
-                                <Destination />
-                            </Grid>
+
                         </Grid>
                     </Grid>
 

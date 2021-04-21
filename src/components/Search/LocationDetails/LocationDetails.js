@@ -39,7 +39,7 @@ const LocationDetails = ({details, closeDetail, addPoint}) => {
                 <br/>
                 <CloseDetail onClick={closeDetail}>Close</CloseDetail>
                 <AddPoint onClick={addPoint}>
-                    <Link to="/ViewTrip" style={{ textDecoration: 'none', color: 'white' }}>add point</Link>
+                    <Link style={{ textDecoration: 'none', color: 'white' }}>add point</Link>
                 </AddPoint>
             </DetailCard>
         </DetailsWrapper>

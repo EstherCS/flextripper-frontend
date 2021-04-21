@@ -60,7 +60,7 @@ export default function HeaderSearch() {
 
                         <div>
                             <IconButton color="inherit">
-                                <Link className="header-link2" to="/viewtrip">
+                                <Link className="header-link2" to="/viewmytrips">
                                 My trip
                                 </Link>
                             </IconButton>
