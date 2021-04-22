@@ -15,8 +15,7 @@ class Register extends Component {
         super(props);
         this.state = {
             email: '',
-            firstname: '',
-            lastname: '',
+            username: '',
             password: '',
         }
         this.handleInput = this.handleInput.bind(this);
@@ -25,41 +24,40 @@ class Register extends Component {
 
 
     handleInput(field) {
-        return (e) => this.setState({ [field]: e.target.value });
+        return (e) => this.setState({[field]: e.target.value});
     }
 
     handleRegisterClick(e) {
         e.preventDefault();
-        const data = JSON.stringify({
+        const {email, username, password} = this.state;
+        const data = {
             email: this.state.email,
-            firstname: this.state.firstname,
-            lastname: this.state.lastname,
+            username: this.state.username,
             password: this.state.password,
-        });
+            userRole: null,
+            enabled: true,
+            history: null
+        };
 
-        $.ajax({
-            url: '/register.json',
-            data: data,
-            type: 'POST',
-            success: (res) => {
-                console.log(data)
+        fetch('/process_register', {
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
             },
-            error: (err) => {
-                console.log(err)
-            }
-        });
-        <Redirect to="/home" />;
+            body: JSON.stringify(data)
+        }).then(resp => {
+            console.log(resp);
+            if (resp.ok) {
+                this.props.history.push("/login");
+            } else {
 
-        // axios
-        //     .post("http://localhost:8080/user", data)
-        //     .then(response => this.setState({
-        //         user: response.data,
-        //     }))
-        //     .catch(err => console.log(err));
+            }
+            return resp.text();
+        });
     };
 
     render() {
-        const { user } = this.props;
+        const {user} = this.props;
         const StyledButton = withStyles({
             root: {
                 background: '#fe706b',
@@ -96,73 +94,55 @@ class Register extends Component {
 
         return (
             <div className="register">
-                <Header />
+                <Header/>
                 <div className="box-container">
-                    <form className={classes.root} noValidate autoComplete="off"
-                    onSubmit={this.handleRegisterClick}>
+                    <form className={classes.root}
+                          noValidate autoComplete="off"
+                          onSubmit={this.handleRegisterClick}
+                          method="POST" action="/register">
                         <Grid container
                               alignItems="center"
                               justify="center"
-                              direction="row">
+                              direction="column">
 
                             <TextField
                                 required
-                                label="First name"
-                                style={{ margin: 10 }}
-                                id="firstname"
+                                label="Username"
+                                style={{margin: 10}}
+                                id="username"
                                 className={classes.textField}
                                 margin="normal"
                                 variant="outlined"
-                                onChange={this.handleInput('firstname')}
+                                onChange={this.handleInput('username')}
                                 value={this.state.firstname}
 
                             />
-
-                            <TextField
-                                required
-                                label="Last name"
-                                style={{ margin: 10 }}
-                                id="lastname"
-                                className={classes.textField}
-                                variant="outlined"
-                                onChange={this.handleInput('lastname')}
-                                value={this.state.lastname}
-
-                            />
-
-                        </Grid>
-                        <Grid container
-                              alignItems="center"
-                              justify="center"
-                              direction="row">
+                            <br/>
                             <TextField
                                 required
                                 label="Email"
-                                style={{ margin: 10 }}
+                                style={{margin: 10}}
                                 id="email"
                                 className={classes.textField}
                                 variant="outlined"
                                 onChange={this.handleInput('email')}
                                 value={this.state.email}
-
                             />
-
+                            <br/>
                             <TextField
                                 required
-                                style={{ margin: 10 }}
+                                style={{margin: 10}}
                                 id="password"
                                 label="Password"
                                 type="password"
                                 variant="outlined"
                                 onChange={this.handleInput('password')}
                                 value={this.state.password}
-
                             />
-
                         </Grid>
                         <Grid container alignItems="center" justify="center" direction="row">
                             <StyledButton variant="contained"
-                                          style={{ margin: 20 }}
+                                          style={{margin: 20}}
                                           type="submit"
                                           onClick={this.handleRegisterClick}
                                           user={user}
@@ -172,10 +152,11 @@ class Register extends Component {
                         </Grid>
                     </form>
                 </div>
-                <Footer />
+                <Footer/>
             </div>
         );
     }
 }
+
 
 export default Register;

@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import Header from "../Header";
 import Footer from "../Footer";
 import TextField from '@material-ui/core/TextField';
 import Grid from "@material-ui/core/Grid";
-import {Button, FormHelperText} from "@material-ui/core";
+import {Button} from "@material-ui/core";
 import {makeStyles, withStyles} from '@material-ui/core/styles';
 import Paper from "@material-ui/core/Paper"
 import axios from "axios";
@@ -16,9 +16,31 @@ class Login extends React.Component {
         this.state = {
             email: '',
             password:'',
+            sessionUsername:'',
         }
         this.handleInput = this.handleInput.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
+
+    }
+
+    /*TEST*/
+    setUsername(e) {
+        e.preventDefault();
+
+        fetch("/auth", {
+            credentials: 'include',
+            headers: {
+                // "Authorization": 'Basic ' + window.btoa(this.state.email + ":" + this.state.password)
+            }
+        }).then(resp => {
+            console.log(resp);
+            console.log(document.cookie);
+            if (resp.ok) {
+                console.log("cookie:")
+            } else {
+            }
+            return resp.text();
+        });
     }
 
     handleInput(field) {
@@ -27,45 +49,39 @@ class Login extends React.Component {
 
     handleLogin(e) {
         e.preventDefault();
-        const data = JSON.stringify({
-            email: this.state.email,
-            password: this.state.password,
+        fetch("/login", {
+            credentials: 'include',
+            method: 'GET',
+            headers: {
+                "Authorization": 'Basic ' + window.btoa(this.state.email + ":" + this.state.password)
+            }
+        }).then(resp => {
+            console.log(resp);
+            if (resp.ok) {
+                this.props.history.push("/home");
+                // this.setState({isLoginSucces: true});
+            } else {
+                // this.setState({isLoginSucces: false});
+            }
+            return resp.text();
         });
 
-        $.ajax({
-            url: '/login.json',
-            data: data,
-            type: 'GET',
-            success: (res) => {
-                console.log(data)
-            },
-            error: (err) => {
-                console.log(err)
-            }
-        });
-        <Redirect to="/home" />;
-        // axios
-        //     .get("http://localhost:8080/user", data)
-        //     .then(response => this.setState({
-        //         user: response.data,
-        //     }))
-        //     .catch(err => console.log(err));
     };
 
     render() {
         const { user } = this.props;
         const StyledButton = withStyles({
-        root: {
-            background: '#fe706b',
-            fontSize: 20,
-            borderRadius: 3,
-            border: 0,
-            color: 'white',
-            height: 45,
-            padding: '0 20px',
-            boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-        },
-    })(Button);
+            root: {
+                background: '#fe706b',
+                fontSize: 20,
+                borderRadius: 3,
+                border: 0,
+                color: 'white',
+                height: 45,
+                padding: '0 20px',
+                boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+            },
+        })(Button);
 
         const useStyles = makeStyles((theme) => ({
             root: {
@@ -81,8 +97,7 @@ class Login extends React.Component {
             <div className="login">
                 <Header />
                 <div className="box-container">
-                    <form className={classes.root} noValidate
-                          autoComplete="off">
+                    <form className={classes.root} noValidate autoComplete="off">
                         <Grid container alignItems="center" justify="center" direction="column">
                             <Grid item xs={12}>
                                 <Paper className={classes.paper}>
@@ -93,7 +108,6 @@ class Login extends React.Component {
                                         variant="outlined"
                                         onChange={this.handleInput('email')}
                                         value={this.state.email}
-
                                     />
                                 </Paper>
                             </Grid>
@@ -110,27 +124,27 @@ class Login extends React.Component {
                                         onChange={this.handleInput('password')}
                                         value={this.state.password}
 
-                                    />
-                                </Paper>
-                            </Grid>
-                            <br/>
-
-                            <Grid item xs={12}>
-                                <Paper className={classes.paper}>
-                                    <StyledButton variant="contained"
-                                                  type="submit"
-                                                  user={user}
-                                                  onClick={this.handleLogin}>
-                                        Log in
-                                    </StyledButton>
-                                </Paper>
-                            </Grid>
+                                />
+                            </Paper>
                         </Grid>
-                    </form>
-                </div>
-                <Footer />
+                        <br/>
+                        ​
+                        <Grid item xs={12}>
+                            <Paper className={classes.paper}>
+                                <StyledButton variant="contained"
+                                              type="submit"
+                                              user={user}
+                                              onClick={this.handleLogin}>
+                                    Log in
+                                </StyledButton>
+                            </Paper>
+                        </Grid>
+                    </Grid>
+                </form>
             </div>
-        );
+        <Footer />
+    </div>
+    );
     }
 }
 
